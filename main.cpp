@@ -26,7 +26,13 @@ std::vector<Point> generate_random_points(int n, double xmin = 0.0, double xmax 
 
 int main()
 {
-    std::vector<Point> points = generate_random_points(10);
+    // //Random Points
+    // std::vector<Point> points = generate_random_points(10);
+
+    // Sample Points (Testing)
+    std::vector<Point> points = {
+        Point(0, 0), Point(1, 0), Point(0, 1),
+        Point(1, 1), Point(0.5, 0.5), Point(0.7, 0.2)};
 
     // Build Triangulation (Incremental)
     Triangulation t;

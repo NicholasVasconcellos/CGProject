@@ -4,6 +4,7 @@
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Triangulation_2.h>
+#include <CGAL/draw_triangulation_2.h>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Triangulation_2<K> Triangulation;
@@ -32,7 +33,7 @@ int main()
     // Sample Points (Testing)
     std::vector<Point> points = {
         Point(0, 0), Point(1, 0), Point(0, 1),
-        Point(1, 1), Point(0.5, 0.5), Point(0.7, 0.2)};
+        Point(1, 1), Point(0.5, 0.5)};
 
     // Build Triangulation (Incremental)
     Triangulation t;
@@ -51,6 +52,9 @@ int main()
         std::cout << "Triangle " << count << ": (" << p1 << "), (" << p2 << "), (" << p3 << ")\n";
         count++;
     }
+
+    // Draw the triangulation
+    CGAL::draw(t);
 
     return 0;
 }

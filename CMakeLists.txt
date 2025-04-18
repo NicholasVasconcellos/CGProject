@@ -11,3 +11,7 @@ add_definitions(-DCGAL_USE_BASIC_VIEWER)
 # 3) Create executable and link with CGAL and CGAL_Qt5
 add_executable(cgal_example main.cpp)
 target_link_libraries(cgal_example PUBLIC CGAL::CGAL CGAL::CGAL_Qt5)
+
+# # 4) Create Test Executable
+# add_executable(myTest test.cpp)
+# target_link_libraries(myTest PUBLIC CGAL::CGAL CGAL::CGAL_Qt5)

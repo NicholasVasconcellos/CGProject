@@ -4,9 +4,10 @@
 #include <CGAL/Triangulation_vertex_base_2.h>
 #include <CGAL/Triangulation_data_structure_2.h>
 #include <CGAL/draw_triangulation_2.h>
-#include "FaceInfo.h"
+#include "2dCluster.h"
 #include <fstream>
 #include <cmath>
+#include <utility>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Triangulation_vertex_base_2<K> Vb;

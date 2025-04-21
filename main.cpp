@@ -6,6 +6,7 @@
 #include <CGAL/draw_triangulation_2.h>
 #include "FaceInfo.h"
 #include <fstream>
+#include <cmath>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Triangulation_vertex_base_2<K> Vb;
@@ -23,6 +24,12 @@ void printVertices(Triangulation::Finite_faces_iterator &faceIt)
     }
 }
 
+double getAngle(Point &p1, Point &p2)
+{
+    // Return Angle in Degrees of an Edge
+    return std::atan2(p2.y() - p1.y(), p2.x() - p1.x()) * 180.0 / M_PI;
+}
+
 void printEdges(Triangulation::Finite_faces_iterator &faceIt)
 {
     // std::cout << "Face id: " << faceIt->info().id << std::endl;
@@ -30,6 +37,7 @@ void printEdges(Triangulation::Finite_faces_iterator &faceIt)
     {
         std::cout << "\tEdge " << i << ": (" << faceIt->vertex(i)->point() << ") --> "
                   << "(" << faceIt->vertex((i + 1) % 3)->point() << ")" << std::endl;
+        std::cout << "\tAngle = " << getAngle(faceIt->vertex(i)->point(), faceIt->vertex((i + 1) % 3)->point()) << std::endl;
     }
 }
 

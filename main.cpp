@@ -14,6 +14,25 @@ typedef CGAL::Triangulation_data_structure_2<Vb, Fb> Tds;
 typedef CGAL::Triangulation_2<K, Tds> Triangulation;
 typedef Triangulation::Point Point;
 
+void printVertices(Triangulation::Finite_faces_iterator &faceIt)
+{
+    std::cout << "Face id: " << faceIt->info().id << std::endl;
+    for (int i = 0; i < 3; i++)
+    {
+        std::cout << "\tVertex " << i << ": " << faceIt->vertex(i)->point() << std::endl;
+    }
+}
+
+void printEdges(Triangulation::Finite_faces_iterator &faceIt)
+{
+    // std::cout << "Face id: " << faceIt->info().id << std::endl;
+    for (int i = 0; i < 3; i++)
+    {
+        std::cout << "\tEdge " << i << ": (" << faceIt->vertex(i)->point() << ") --> "
+                  << "(" << faceIt->vertex((i + 1) % 3)->point() << ")" << std::endl;
+    }
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -29,7 +48,14 @@ int main(int argc, char *argv[])
     int currId = 0;
     for (auto faceIt = t.finite_faces_begin(); faceIt != t.finite_faces_end(); faceIt++)
     {
+        // Set ID
         faceIt->info().id = currId++;
+
+        // Print Vertex Coordinates
+        printVertices(faceIt);
+
+        // Print Edges
+        printEdges(faceIt);
     }
 
     CGAL::draw(t);

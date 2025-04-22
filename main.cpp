@@ -2,7 +2,7 @@
 
 void printVertices(Triangulation::Finite_faces_iterator &faceIt)
 {
-    std::cout << "Face id: " << faceIt->info().id << std::endl;
+    std::cout << "Face id: " << faceIt->info().clusterIdx << std::endl;
     for (int i = 0; i < 3; i++)
     {
         std::cout << "\tVertex " << i << ": " << faceIt->vertex(i)->point() << std::endl;
@@ -16,7 +16,7 @@ double getAngle(Point &p1, Point &p2)
 }
 
 // Check if an edge is vertical based on angle tolerance
-bool isVertical(double angle, int tolerance)
+bool isVertical(double angle, double tolerance)
 {
     return std::abs(90 - std::abs(angle)) <= tolerance;
 }
@@ -30,6 +30,22 @@ void printEdges(Triangulation::Finite_faces_iterator &faceIt)
                   << "(" << faceIt->vertex((i + 1) % 3)->point() << ")" << std::endl;
         std::cout << "\tAngle = " << getAngle(faceIt->vertex(i)->point(), faceIt->vertex((i + 1) % 3)->point()) << std::endl;
     }
+}
+
+Clusters getClusters(Triangulation &t, double tolerance)
+{
+    // Create a queue for Curr and next Clusters
+    std::queue<Face> currCluster;
+    std::queue<Face> nextCluster;
+
+    // Put first face on next Cluster Queue
+    nextCluster.push(Face(t.finite_faces_begin()));
+
+    // Create Clusters obj to store result
+
+    Clusters result;
+
+    return result;
 }
 
 // Clustering Alg
@@ -123,9 +139,6 @@ for i in 3
 
 int main(int argc, char *argv[])
 {
-    std::queue<FaceWrapper> newCluster;
-    std::queue<FaceWrapper> currCluster;
-
     // Sample Points (Testing)
     std::vector<Point> points = {
         Point(0, 0), Point(1, 0), Point(0, 1),
@@ -138,15 +151,17 @@ int main(int argc, char *argv[])
     int currId = 0;
     for (auto faceIt = t.finite_faces_begin(); faceIt != t.finite_faces_end(); faceIt++)
     {
-        // Set ID
-        faceIt->info().id = currId++;
-
         // Print Vertex Coordinates
         printVertices(faceIt);
 
         // Print Edges
         printEdges(faceIt);
     }
+
+    // Cluster Faces together
+    double tolerance = 10;
+
+    Clusters faceClusters = getClusters(t, tolerance);
 
     CGAL::draw(t);
 

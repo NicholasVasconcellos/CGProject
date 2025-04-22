@@ -1,17 +1,9 @@
 #include "2dCluster.h"
 #include <iostream>
 
-FaceInfo::FaceInfo() : id(-1) {}
-FaceInfo::FaceInfo(int i) : id(i) {}
+FaceInfo::FaceInfo() : clusterIdx(-1), seen(false) {}
 
-FaceWrapper::FaceWrapper(Triangulation::Face_handle fh) : face(fh) {}
-
-void FaceWrapper::print_info() const
-{
-    std::cout << "Wrapped Face ID: " << face->info().id << std::endl;
-}
-
-Cluster::Cluster(int id, int size) : id(id), size(size) {}
+Cluster::Cluster(int index, int size) : index(index), size(size) {}
 
 // void Clusters::getHistogram()
 // {

@@ -4,6 +4,7 @@ FaceInfo::FaceInfo() : clusterIdx(-1), seen(false) {}
 
 Cluster::Cluster(int index) : index(index) {}
 
+Clusters::Clusters(std::string &pointType, std::string &trinagulationType) : pointType(pointType), trinagulationType(trinagulationType) {}
 
 void Clusters::buildTable()
 {

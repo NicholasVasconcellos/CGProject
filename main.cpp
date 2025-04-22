@@ -65,7 +65,7 @@ bool isClusterable(Face f, int i, double tolerance)
     return isVertical(angle, tolerance);
 }
 
-Clusters getClusters(Triangulation &t, double tolerance)
+Clusters getClusters(Triangulation &t, double tolerance, std::string &pointType, std::string &triangulationType)
 {
 
     // Create a queue for Curr and next Clusters
@@ -80,7 +80,7 @@ Clusters getClusters(Triangulation &t, double tolerance)
     nextClusterQ.push(f);
 
     // Create Clusters obj to store all clusters
-    Clusters allClusters;
+    Clusters allClusters(pointType, triangulationType);
 
     // Reference to current Cluster
     Cluster *clusterPtr = nullptr;
@@ -153,7 +153,7 @@ Clusters getClusters(Triangulation &t, double tolerance)
 
 // Clustering Alg
 
-void simulate(std::vector<Point> &points, double tolerance, std::string& triangulationType, std::string& pointSetType )
+void simulate(std::vector<Point> &points, double tolerance, std::string &pointSetType, std::string &triangulationType)
 {
     // Create a triangulation and iterative add each point in the set
     Triangulation t;
@@ -164,7 +164,7 @@ void simulate(std::vector<Point> &points, double tolerance, std::string& triangu
 
     // Cluster Faces together
     // Create Cluster Object
-    Clusters faceClusters = getClusters(t, tolerance);
+    Clusters faceClusters = getClusters(t, tolerance, pointSetType, triangulationType);
 
     // Build a table
     faceClusters.buildTable();
@@ -216,6 +216,8 @@ int main(int argc, char *argv[])
     double yMin = -10.0, yMax = 10.0;
 
     double tolerance = 30;
+    std::string pointSetType = "Random";
+    std::string triangulationType = "Regular";
 
     // Generate all Point Sets
     std::vector<std::vector<Point>> pointSets = getPointSets(numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
@@ -224,7 +226,7 @@ int main(int argc, char *argv[])
     // Produces a Histogram in CSV and a window to view the triangulation
     for (int i = 0; i < pointSets.size(); i++)
     {
-        simulate(pointSets.at(i), tolerance);
+        simulate(pointSets.at(i), tolerance, pointSetType, triangulationType);
     }
 
     return EXIT_SUCCESS;

@@ -11,6 +11,8 @@
 #include <vector>
 #include <cassert>
 #include <unordered_map>
+#include <fstream>
+#include <iostream>
 
 struct FaceInfo
 {
@@ -40,8 +42,9 @@ struct Cluster
 
 struct Clusters
 {
-    std::unordered_map<int, int> Table;
+    std::unordered_map<int, int> table;
     std::vector<Cluster *> clusterList;
 
+    void buildTable();
     void getHistogram();
 };

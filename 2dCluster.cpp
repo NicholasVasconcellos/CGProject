@@ -26,7 +26,7 @@ void Clusters::buildTable()
 void Clusters::getHistogram()
 {
     // Open a CSV file for writing
-    std::ofstream csvFile("cluster_histogram.csv");
+    std::ofstream csvFile("../cluster_histogram.csv");
 
     // Check if file opened successfully
     if (!csvFile.is_open())

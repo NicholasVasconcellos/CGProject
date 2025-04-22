@@ -166,6 +166,9 @@ int main(int argc, char *argv[])
 
     Clusters faceClusters = getClusters(t, tolerance);
 
+    faceClusters.buildTable();
+    faceClusters.getHistogram();
+
     CGAL::draw(t);
 
     return EXIT_SUCCESS;

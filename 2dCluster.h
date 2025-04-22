@@ -14,6 +14,7 @@
 struct FaceInfo
 {
     int id;
+    bool seen = false;
     FaceInfo();
     FaceInfo(int i);
 };

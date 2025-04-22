@@ -13,7 +13,7 @@ void FaceWrapper::print_info() const
 
 Cluster::Cluster(int id, int size) : id(id), size(size) {}
 
-void Clusters::getHistogram()
-{
-    // Produce a CSV file with the Table
-}
+// void Clusters::getHistogram()
+// {
+//     // Produce a CSV file with the Table
+// }

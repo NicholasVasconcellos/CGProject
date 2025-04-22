@@ -9,7 +9,7 @@ include(${CGAL_USE_FILE})
 add_definitions(-DCGAL_USE_BASIC_VIEWER)
 
 # 3) Create executable and link with CGAL and CGAL_Qt5
-add_executable(cgal_example main.cpp)
+add_executable(cgal_example main.cpp 2dCluster.cpp)
 target_link_libraries(cgal_example PUBLIC CGAL::CGAL CGAL::CGAL_Qt5)
 
 # # 4) Create Test Executable

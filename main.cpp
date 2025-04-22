@@ -32,110 +32,113 @@ void printEdges(Triangulation::Finite_faces_iterator &faceIt)
     }
 }
 
+/**
+ * @brief Check if i_th neighbour of face f is in same cluster
+ *
+ * @param f Face handle (reference).
+ * @param i Neighbour Index.
+ * @param tolerance Tolerance of angle beyond 90 degrees to
+ * which still considered vertical
+ * @return if they are clusterable.
+ */
+bool isClusterable(Face f, int i, double tolerance)
+{
+    // Check if face is in same cluster
+    Point p1 = f->vertex((i + 1) % 3)->point();
+    Point p2 = f->vertex((i + 2) % 3)->point();
+
+    double angle = getAngle(p1, p2);
+
+    return isVertical(angle, tolerance);
+}
+
 Clusters getClusters(Triangulation &t, double tolerance)
 {
+
     // Create a queue for Curr and next Clusters
-    std::queue<Face> currCluster;
-    std::queue<Face> nextCluster;
+    std::queue<Face> currClusterQ;
+    std::queue<Face> nextClusterQ;
+
+    // Pick a face to start the traversal
+    Face f = t.finite_faces_begin();
+    f->info().seen = true; // Mark it as seen
 
     // Put first face on next Cluster Queue
-    nextCluster.push(Face(t.finite_faces_begin()));
+    nextClusterQ.push(f);
 
-    // Create Clusters obj to store result
+    // Create Clusters obj to store all clusters
+    Clusters allClusters;
 
-    Clusters result;
+    // Reference to current Cluster
+    Cluster *clusterPtr = nullptr;
 
-    return result;
+    // Current Cluster Index
+    int clusterIdx = 0;
+
+    while (!nextClusterQ.empty() || !currClusterQ.empty())
+    {
+
+        // If current Cluster is empty, we start a new one
+        if (currClusterQ.empty())
+        {
+            // Create a new Cluster
+            clusterPtr = new Cluster(clusterIdx);
+
+            // Add it to list of clusters
+            allClusters.clusterList.push_back(clusterPtr);
+
+            // Add it to CurrCluster Queue
+            currClusterQ.push(nextClusterQ.front());
+
+            // Pop from next cluster
+            nextClusterQ.pop();
+
+            // Increment Current Cluster Index (For the next cluster)
+            clusterIdx++;
+        }
+        // Process existing cluster
+        // Double check queue is not empty
+        assert(!currClusterQ.empty());
+
+        // get the top element and pop the queue
+        f = currClusterQ.front();
+        currClusterQ.pop();
+
+        // Add Current Face to the current cluster
+        clusterPtr->faces.push_back(f);
+
+        // BFS Neighbours of f
+        for (int i = 0; i < 3; i++)
+        {
+            // Get ith Neighbour
+            Face neighbour = f->neighbor(i);
+
+            // Ignore visited or infinite faces
+            if (t.is_infinite(neighbour) || neighbour->info().seen)
+            {
+                continue;
+            }
+
+            if (isClusterable(f, i, tolerance))
+            {
+                // Add the same cluster
+                currClusterQ.push(neighbour);
+            }
+            else
+            {
+                // Add to a new Cluster
+                nextClusterQ.push(neighbour);
+            }
+
+            // Mark Seen
+            neighbour->info().seen = true;
+        }
+    }
+
+    return allClusters;
 }
 
 // Clustering Alg
-
-/*
-// Set the tolerance in degrees
-int tolerance = 30
-
-// Add an attribute clusterIndex to the face base class set to -1 by default
-    // clusterIndex = -1; ( -1 means unassigned flag)
-
-// Create a queue for Curr and next Clusters
-// Curr Cluster Queue
-Queue currCluster
-
-// Next Cluster Queue
-Queue nextCluster
-
-// Put first face on next Cluster Queue
-nextCluster.push(faces.begin())
-
-// Initialize Cluster Variables
-currClusterIdx = 0;
-currClusterSize = 0;
-
-
-while nextCluster ! empty or currCluster ! empty
-    if(currCluster.empty())
-// Create a new Cluster, and add element to currCluster queue
-
-// Increment Cluster Index
-clusterIdx++;
-
-// Create new cluster object
-Cluster currCluster(id= ClusterIndex, size=0, face = newCluster.top().face)
-
-// Add it to list of clusters
-clusters.add(currCluster)
-
-// Add it to the currentCluster
-currCluster.push( nextCluster.top())
-    continue;
-
-
-    // Process Existing Cluster
-// get the queue top and pop
-f1 = currCluster.front
-currCluster.popFront()
-// Increment current cluster size
-    currCluster.size++;
-
-    // BFS the Neighbours
-// for every neighbouring face
-for i in 3
-    f2 = f1.neighbour(i)
-    if( f2 is Finite && f2 not Seen)
-        if(isVertical(Edge(f1, f2))
-            // Put the two faces in same cluster
-            // if f1 clustered
-                // if f2 clustered
-                    // This shouldn't happen but ok
-                    // Merge clusters (f1.cluster, f2.cluster)
-                // else
-                    // Add f2 to f1 cluster
-                    // f2.cluster = f1.cluster
-            // else
-                // if f2 clustered
-                    // add f1 to f2 cluster
-                //else
-                    // Create new cluster with f1 and f2
-        // Add f2 to currCluster Queue
-    else // (Not Vertical)
-        // Put each face in a different cluster
-            // if f1 clustered
-                // if f2 clustered
-                    // continue;
-                // else
-                    // Add f2 to new cluster
-                    // newCluster(f2)
-            // else
-                // if f2 clustered
-                    // Add f1 to new cluster
-                    // newCluster(f1)
-                //else
-                    // Create a new cluster for each
-                    // newCluster(f1)
-                    // newCluster(f2)
-        // Add f2 to Next Cluster Queue
-        nextCluster.push(f2)
-*/
 
 int main(int argc, char *argv[])
 {

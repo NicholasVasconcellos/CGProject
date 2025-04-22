@@ -8,7 +8,8 @@
 #include <fstream>
 #include <cmath>
 #include <utility>
-#include <list>
+#include <vector>
+#include <cassert>
 #include <unordered_map>
 
 struct FaceInfo
@@ -26,19 +27,21 @@ typedef CGAL::Triangulation_2<K, Tds> Triangulation;
 typedef Tds::Face_handle Face;
 typedef Triangulation::Point Point;
 
-
 struct Cluster
 {
+    // Index or ID of this cluster
     int index;
-    int size = 0;
 
-    Cluster(int index, int size);
+    // List of Faces in this Cluster
+    std::vector<Face> faces;
+
+    Cluster(int index);
 };
 
 struct Clusters
 {
     std::unordered_map<int, int> Table;
-    std::list<Cluster> clusterList;
+    std::vector<Cluster *> clusterList;
 
     void getHistogram();
 };

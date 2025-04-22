@@ -3,7 +3,7 @@
 
 FaceInfo::FaceInfo() : clusterIdx(-1), seen(false) {}
 
-Cluster::Cluster(int index, int size) : index(index), size(size) {}
+Cluster::Cluster(int index) : index(index) {}
 
 // void Clusters::getHistogram()
 // {

@@ -1,5 +1,11 @@
 #include "2dCluster.h"
 
+double getAngle(Point &p1, Point &p2)
+{
+    // Return Angle in Degrees of an Edge
+    return std::atan2(p2.y() - p1.y(), p2.x() - p1.x()) * 180.0 / M_PI;
+}
+
 void printVertices(Triangulation::Finite_faces_iterator &faceIt)
 {
     std::cout << "Face id: " << faceIt->info().clusterIdx << std::endl;
@@ -7,18 +13,6 @@ void printVertices(Triangulation::Finite_faces_iterator &faceIt)
     {
         std::cout << "\tVertex " << i << ": " << faceIt->vertex(i)->point() << std::endl;
     }
-}
-
-double getAngle(Point &p1, Point &p2)
-{
-    // Return Angle in Degrees of an Edge
-    return std::atan2(p2.y() - p1.y(), p2.x() - p1.x()) * 180.0 / M_PI;
-}
-
-// Check if an edge is vertical based on angle tolerance
-bool isVertical(double angle, double tolerance)
-{
-    return std::abs(90 - std::abs(angle)) <= tolerance;
 }
 
 void printEdges(Triangulation::Finite_faces_iterator &faceIt)
@@ -30,6 +24,25 @@ void printEdges(Triangulation::Finite_faces_iterator &faceIt)
                   << "(" << faceIt->vertex((i + 1) % 3)->point() << ")" << std::endl;
         std::cout << "\tAngle = " << getAngle(faceIt->vertex(i)->point(), faceIt->vertex((i + 1) % 3)->point()) << std::endl;
     }
+}
+void printInfo(Triangulation &t)
+{
+    // Iterate all faces
+    int currId = 0;
+    for (auto faceIt = t.finite_faces_begin(); faceIt != t.finite_faces_end(); faceIt++)
+    {
+        // Print Vertex Coordinates
+        printVertices(faceIt);
+
+        // Print Edges
+        printEdges(faceIt);
+    }
+}
+
+// Check if an edge is vertical based on angle tolerance
+bool isVertical(double angle, double tolerance)
+{
+    return std::abs(90 - std::abs(angle)) <= tolerance;
 }
 
 /**
@@ -140,41 +153,79 @@ Clusters getClusters(Triangulation &t, double tolerance)
 
 // Clustering Alg
 
-int main(int argc, char *argv[])
+void simulate(std::vector<Point> &points, double tolerance, std::string& triangulationType, std::string& pointSetType )
 {
-    // Generate Points
-
-    
-
-
-    // Sample Points (Testing)
-    std::vector<Point> points = {
-        Point(0, 0), Point(1, 0), Point(0, 1),
-        Point(1, 1), Point(0.5, 0.5)};
-
+    // Create a triangulation and iterative add each point in the set
     Triangulation t;
     t.insert(points.begin(), points.end());
 
-    // Iterate all faces and set ID for each
-    int currId = 0;
-    for (auto faceIt = t.finite_faces_begin(); faceIt != t.finite_faces_end(); faceIt++)
-    {
-        // Print Vertex Coordinates
-        printVertices(faceIt);
-
-        // Print Edges
-        printEdges(faceIt);
-    }
+    // // Print Edges and Vertices (Optional)
+    // printInfo(t);
 
     // Cluster Faces together
-    double tolerance = 10;
-
+    // Create Cluster Object
     Clusters faceClusters = getClusters(t, tolerance);
 
+    // Build a table
     faceClusters.buildTable();
+    // Create a Histogram CSV File
     faceClusters.getHistogram();
 
-    CGAL::draw(t);
+    // CGAL::draw(t);
+}
+
+std::vector<std::vector<Point>> getPointSets(int numPoints, int numClusters, double clusterDensity,
+                                             double xMin, double xMax, double yMin, double yMax)
+{
+
+    std::vector<std::vector<Point>> pointSets;
+
+    // Uniform Points
+    std::cout << "Generating " << numPoints << " uniform random points..." << std::endl;
+    std::vector<Point> uniformPoints = generateUniformRandomPoints(numPoints, xMin, xMax, yMin, yMax);
+    pointSets.push_back(uniformPoints);
+
+    // Clustered Points
+    std::cout << "Generating " << numPoints << " points in " << numClusters
+              << " clusters with density " << clusterDensity << "..." << std::endl;
+    std::vector<Point> clusteredPoints = generateClusteredPoints(numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
+    pointSets.push_back(clusteredPoints);
+
+    std::string pointType = "clustered"; // Default to uniform
+
+    // Use sample points for testing
+    std::cout << "Generating Sample Points" << std::endl;
+    std::vector<Point> samplePoints = {
+        Point(0, 0), Point(1, 0), Point(0, 1),
+        Point(1, 1), Point(0.5, 0.5)};
+
+    pointSets.push_back(samplePoints);
+
+    return pointSets;
+}
+
+int main(int argc, char *argv[])
+{
+    // Generate Random Point Sets
+
+    // Set Parameters for point generation
+    int numPoints = 100;
+    int numClusters = 5;
+    double clusterDensity = 2.0;
+    double xMin = -10.0, xMax = 10.0;
+    double yMin = -10.0, yMax = 10.0;
+
+    double tolerance = 30;
+
+    // Generate all Point Sets
+    std::vector<std::vector<Point>> pointSets = getPointSets(numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
+
+    // Triangulate each Point Set
+    // Produces a Histogram in CSV and a window to view the triangulation
+    for (int i = 0; i < pointSets.size(); i++)
+    {
+        simulate(pointSets.at(i), tolerance);
+    }
 
     return EXIT_SUCCESS;
 }

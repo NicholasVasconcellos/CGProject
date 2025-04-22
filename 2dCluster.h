@@ -15,8 +15,6 @@
 #include <iostream>
 #include <random>
 
-
-
 struct FaceInfo
 {
     int clusterIdx;
@@ -31,8 +29,6 @@ typedef CGAL::Triangulation_data_structure_2<Vb, Fb> Tds;
 typedef CGAL::Triangulation_2<K, Tds> Triangulation;
 typedef Tds::Face_handle Face;
 typedef Triangulation::Point Point;
-
-
 
 struct Cluster
 {
@@ -49,6 +45,11 @@ struct Clusters
 {
     std::unordered_map<int, int> table;
     std::vector<Cluster *> clusterList;
+    std::string pointType;
+    std::string trinagulationType;
+    std::string parameters;
+
+    Clusters(std::string& pointType, std::string& triangulationType);
 
     void buildTable();
     void getHistogram();
@@ -56,7 +57,7 @@ struct Clusters
 
 // Point generation function prototypes
 std::vector<Point> generateUniformRandomPoints(int numPoints, double xMin, double xMax, double yMin, double yMax);
-std::vector<Point> generateClusteredPoints(int numPoints, int numClusters, double clusterDensity, 
-                                          double xMin, double xMax, double yMin, double yMax);
-bool savePointsToCSV(const std::vector<Point>& points, const std::string& filename);
-std::vector<Point> loadPointsFromCSV(const std::string& filename);
+std::vector<Point> generateClusteredPoints(int numPoints, int numClusters, double clusterDensity,
+                                           double xMin, double xMax, double yMin, double yMax);
+bool savePointsToCSV(const std::vector<Point> &points, const std::string &filename);
+std::vector<Point> loadPointsFromCSV(const std::string &filename);

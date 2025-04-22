@@ -4,6 +4,7 @@ FaceInfo::FaceInfo() : clusterIdx(-1), seen(false) {}
 
 Cluster::Cluster(int index) : index(index) {}
 
+
 void Clusters::buildTable()
 {
     // For each Cluster
@@ -24,8 +25,9 @@ void Clusters::buildTable()
 
 void Clusters::getHistogram()
 {
+    std::cout << "Creating CSV File" << std::endl;
     // Open a CSV file for writing
-    std::ofstream csvFile("../cluster_histogram.csv");
+    std::ofstream csvFile("../results/cluster_histogram.csv");
 
     // Check if file opened successfully
     if (!csvFile.is_open())

@@ -142,6 +142,11 @@ Clusters getClusters(Triangulation &t, double tolerance)
 
 int main(int argc, char *argv[])
 {
+    // Generate Points
+
+    
+
+
     // Sample Points (Testing)
     std::vector<Point> points = {
         Point(0, 0), Point(1, 0), Point(0, 1),

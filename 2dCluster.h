@@ -13,6 +13,9 @@
 #include <unordered_map>
 #include <fstream>
 #include <iostream>
+#include <random>
+
+
 
 struct FaceInfo
 {
@@ -28,6 +31,8 @@ typedef CGAL::Triangulation_data_structure_2<Vb, Fb> Tds;
 typedef CGAL::Triangulation_2<K, Tds> Triangulation;
 typedef Tds::Face_handle Face;
 typedef Triangulation::Point Point;
+
+
 
 struct Cluster
 {
@@ -48,3 +53,10 @@ struct Clusters
     void buildTable();
     void getHistogram();
 };
+
+// Point generation function prototypes
+std::vector<Point> generateUniformRandomPoints(int numPoints, double xMin, double xMax, double yMin, double yMax);
+std::vector<Point> generateClusteredPoints(int numPoints, int numClusters, double clusterDensity, 
+                                          double xMin, double xMax, double yMin, double yMax);
+bool savePointsToCSV(const std::vector<Point>& points, const std::string& filename);
+std::vector<Point> loadPointsFromCSV(const std::string& filename);

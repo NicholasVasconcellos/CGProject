@@ -120,8 +120,8 @@ Clusters getClusters(Triangulation &t, double tolerance, std::string &pointSetLa
 
         // Add Information to Face Object
         // Add cluster color to the Face object
-        f->info().color = CGAL::blue();
-        // f->info().color = clusterPtr->color;
+        // f->info().color = CGAL::blue();
+        f->info().color = clusterPtr->color;
         // Add Current Face to the current cluster
         clusterPtr->faces.push_back(f);
 
@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
     double clusterDensity = 5.0;
     double xMin = -50.0, xMax = 50.0;
     double yMin = -50.0, yMax = 50.0;
-    double tolerance = 20;
+    double tolerance = 40;
 
     // Generate all Point Sets
     std::vector<std::vector<Point>> pointSets;
@@ -233,7 +233,7 @@ int main(int argc, char *argv[])
 
     // Produces a Histogram in CSV and a window to view the triangulation
     // FIX ME: ONLY DOING FIRST PLOT FOR NOW
-    for (int i = 2; i < pointSets.size(); i++)
+    for (int i = 1; i < 2; i++)
     {
         simulate(pointSets.at(i), labels.at(i), tolerance, triangulationType);
     }

@@ -5,6 +5,7 @@
 #include <CGAL/Triangulation_vertex_base_2.h>
 #include <CGAL/Triangulation_data_structure_2.h>
 #include <CGAL/draw_triangulation_2.h>
+#include <CGAL/IO/Color.h>
 #include <fstream>
 #include <cmath>
 #include <utility>
@@ -19,6 +20,8 @@ struct FaceInfo
 {
     int clusterIdx;
     bool seen;
+    CGAL::Color color;
+
     FaceInfo();
 };
 
@@ -49,7 +52,7 @@ struct Clusters
     std::string trinagulationType;
     std::string parameters;
 
-    Clusters(std::string& pointType, std::string& triangulationType);
+    Clusters(std::string &pointType, std::string &triangulationType);
 
     void buildTable();
     void getHistogram();

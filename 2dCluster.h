@@ -92,15 +92,7 @@ inline void drawTriangulationWithColors(const Triangulation &t,
     QApplication app(argc, const_cast<char **>(argv));
 
     // Create viewer with specified parameters
-    CGAL::SimpleTriangulation2ViewerQt<Triangulation, ClusterColorFunctor> viewer(
-        t,     // The triangulation
-        title, // Window title
-        true,  // Show vertices
-        true,  // Show edges
-        true,  // Show faces
-        false, // Don't use mono color
-        false  // Don't inverse normal
-    );
+    CGAL::SimpleTriangulation2ViewerQt<Triangulation, ClusterColorFunctor> viewer(app.activeWindow(), t, title, false, ClusterColorFunctor());
 
     // The viewer should display edges and vertices by default
     viewer.show();
@@ -109,4 +101,4 @@ inline void drawTriangulationWithColors(const Triangulation &t,
     // Fallback if the viewer is not available
     std::cerr << "CGAL Basic Viewer was not compiled." << std::endl;
 #endif
-};
+}

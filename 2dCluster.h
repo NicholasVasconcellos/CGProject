@@ -83,7 +83,6 @@ struct ClusterColorFunctor
     }
 };
 
-// Custom draw function that uses our color functor
 inline void drawTriangulationWithColors(const Triangulation &t,
                                         const char *title = "Triangulation with Clusters")
 {
@@ -91,12 +90,23 @@ inline void drawTriangulationWithColors(const Triangulation &t,
     int argc = 1;
     const char *argv[2] = {"t2_viewer", "\0"};
     QApplication app(argc, const_cast<char **>(argv));
-    CGAL::SimpleTriangulation2ViewerQt<Triangulation, ClusterColorFunctor>
-        mainwindow(app.activeWindow(), t, title, false, ClusterColorFunctor());
-    mainwindow.show();
+
+    // Create viewer with specified parameters
+    CGAL::SimpleTriangulation2ViewerQt<Triangulation, ClusterColorFunctor> viewer(
+        t,     // The triangulation
+        title, // Window title
+        true,  // Show vertices
+        true,  // Show edges
+        true,  // Show faces
+        false, // Don't use mono color
+        false  // Don't inverse normal
+    );
+
+    // The viewer should display edges and vertices by default
+    viewer.show();
     app.exec();
 #else
     // Fallback if the viewer is not available
     std::cerr << "CGAL Basic Viewer was not compiled." << std::endl;
 #endif
-}
+};

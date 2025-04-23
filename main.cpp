@@ -172,7 +172,7 @@ void simulate(std::vector<Point> &points, std::string &label, double tolerance, 
     // Create a Histogram CSV File
     faceClusters.getHistogram();
 
-    // CGAL::draw(t);
+    CGAL::draw(t);
 }
 
 void getPointSets(std::vector<std::vector<Point>> &pointSets, std::vector<std::string> &labels, int numPoints, int numClusters, double clusterDensity,
@@ -198,6 +198,8 @@ void getPointSets(std::vector<std::vector<Point>> &pointSets, std::vector<std::s
         Point(1, 1), Point(0.5, 0.5)};
     pointSets.push_back(samplePoints);
     labels.push_back("sample");
+
+    std::cout << " Generated " << pointSets.size() << "Point SEts" << std::endl;
 }
 
 int main(int argc, char *argv[])
@@ -228,7 +230,8 @@ int main(int argc, char *argv[])
     std::string triangulationType = "Regular";
 
     // Produces a Histogram in CSV and a window to view the triangulation
-    for (int i = 0; i < pointSets.size(); i++)
+    // FIX ME: ONLY DOING FIRST PLOT FOR NOW
+    for (int i = 2; i < pointSets.size(); i++)
     {
         simulate(pointSets.at(i), labels.at(i), tolerance, triangulationType);
     }

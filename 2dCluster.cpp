@@ -29,7 +29,7 @@ void Clusters::getHistogram()
     std::cout << "Creating CSV File" << std::endl;
 
     // Create filename based on Parameters
-    std::string filename = "../results/" + this->pointType + "_" + this->trinagulationType + "cluster_histogram.csv";
+    std::string filename = "../results/" + this->pointType + "_" + this->trinagulationType + "histogram.csv";
 
     // Open a CSV file for writing
     std::ofstream csvFile(filename);

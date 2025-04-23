@@ -5,6 +5,8 @@
 #include <CGAL/Triangulation_vertex_base_2.h>
 #include <CGAL/Triangulation_data_structure_2.h>
 #include <CGAL/draw_triangulation_2.h>
+#include <QApplication>
+#include <CGAL/Qt/Basic_viewer_qt.h>
 #include <CGAL/IO/Color.h>
 #include <fstream>
 #include <cmath>
@@ -68,3 +70,33 @@ std::vector<Point> generateClusteredPoints(int numPoints, int numClusters, doubl
                                            double xMin, double xMax, double yMin, double yMax);
 bool savePointsToCSV(const std::vector<Point> &points, const std::string &filename);
 std::vector<Point> loadPointsFromCSV(const std::string &filename);
+
+// Custom color functor for the CGAL triangulation viewer
+struct ClusterColorFunctor
+{
+    template <typename T2>
+    static CGAL::Color run(const T2 &,
+                           const typename T2::Finite_faces_iterator fh)
+    {
+        // Return the color stored in the face's info
+        return fh->info().color;
+    }
+};
+
+// Custom draw function that uses our color functor
+inline void drawTriangulationWithColors(const Triangulation &t,
+                                        const char *title = "Triangulation with Clusters")
+{
+#ifdef CGAL_USE_BASIC_VIEWER
+    int argc = 1;
+    const char *argv[2] = {"t2_viewer", "\0"};
+    QApplication app(argc, const_cast<char **>(argv));
+    CGAL::SimpleTriangulation2ViewerQt<Triangulation, ClusterColorFunctor>
+        mainwindow(app.activeWindow(), t, title, false, ClusterColorFunctor());
+    mainwindow.show();
+    app.exec();
+#else
+    // Fallback if the viewer is not available
+    std::cerr << "CGAL Basic Viewer was not compiled." << std::endl;
+#endif
+}

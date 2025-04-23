@@ -2,7 +2,21 @@
 
 FaceInfo::FaceInfo() : clusterIdx(-1), seen(false) {}
 
-Cluster::Cluster(int index) : index(index) {}
+Cluster::Cluster(int index) : index(index) {setColor();}
+
+void Cluster::setColor()
+{
+    // Create a random color
+    // Generate 3 random RGB Values for Color
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> colorDist(0, 255);
+
+    // Create color from 3 random RGB values
+    this->color = CGAL::Color(colorDist(gen),
+                              colorDist(gen),
+                              colorDist(gen));
+}
 
 Clusters::Clusters(std::string &pointType, std::string &trinagulationType) : pointType(pointType), trinagulationType(trinagulationType) {}
 

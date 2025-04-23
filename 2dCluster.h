@@ -41,7 +41,11 @@ struct Cluster
     // List of Faces in this Cluster
     std::vector<Face> faces;
 
+    CGAL::Color color;
+
     Cluster(int index);
+
+    void setColor();
 };
 
 struct Clusters

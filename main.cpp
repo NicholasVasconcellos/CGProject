@@ -119,7 +119,8 @@ Clusters getClusters(Triangulation &t, double tolerance, std::string &pointSetLa
         currClusterQ.pop();
 
         // Add Information to Face Object
-        f->info().color = CGAL::blue(); // Fix me: Adding all faces blue for now
+        // Add cluster color to the Face object
+        f->info().color = clusterPtr->color;
         // Add Current Face to the current cluster
         clusterPtr->faces.push_back(f);
 

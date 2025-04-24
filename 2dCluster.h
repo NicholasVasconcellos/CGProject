@@ -1,6 +1,7 @@
 #pragma once
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Triangulation_2.h>
+#include <CGAL/Delaunay_triangulation_2.h>
 #include <CGAL/Triangulation_face_base_with_info_2.h>
 #include <CGAL/Triangulation_vertex_base_2.h>
 #include <CGAL/Triangulation_data_structure_2.h>
@@ -32,6 +33,7 @@ typedef CGAL::Triangulation_vertex_base_2<K> Vb;
 typedef CGAL::Triangulation_face_base_with_info_2<FaceInfo, K> Fb;
 typedef CGAL::Triangulation_data_structure_2<Vb, Fb> Tds;
 typedef CGAL::Triangulation_2<K, Tds> Triangulation;
+typedef CGAL::Delaunay_triangulation_2<K, Tds> DelaunayTriangulation;
 typedef Tds::Face_handle Face;
 typedef Triangulation::Point Point;
 

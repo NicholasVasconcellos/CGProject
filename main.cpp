@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
 
     // Triangulate each Point Set
     // Choose Type of Triangulation
-    std::string triangulationType = "Regular";
+    std::string triangulationType = "Delaunay";
 
     // Produces a Histograms in CSV
     // FIX ME: ONLY DOING FIRST PLOT FOR NOW

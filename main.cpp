@@ -168,7 +168,7 @@ void simulate(std::vector<Point> &points, std::string &label, double tolerance, 
 
         // Cluster Faces together
         // Create Cluster Object
-        Clusters faceClusters = getClusters(t,label, triangulationType, tolerance);
+        Clusters faceClusters = getClusters(t, label, triangulationType, tolerance);
 
         // Build a table
         faceClusters.buildTable();
@@ -263,11 +263,8 @@ int main(int argc, char *argv[])
 
     /*== Read Point Sets*/
 
-
-
     /*=== CREATE HISTOGRAMS ====*/
     // Get Histogram for all point sets
-
 
     // Read Point Sets and Labels
     std::unordered_map<std::string, std::vector<Point>> pointSets = loadPointSets();
@@ -277,7 +274,8 @@ int main(int argc, char *argv[])
     std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
 
     // // Produce all CSV Histograms
-    for(auto it = pointSets.begin(); it != pointSets.end(); it++){
+    for (auto it = pointSets.begin(); it != pointSets.end(); it++)
+    {
         // For each Point SEt
         for (auto &&triangulationType : triangulationTypes)
         {
@@ -285,15 +283,11 @@ int main(int argc, char *argv[])
             for (auto &&tolerance : angleTolerance)
             {
                 // For each Angle Tolerance
-                simulate(it->second, it->first, tolerance, triangulationType);
-                
+                std::string label = it->first;
+                simulate(it->second, label, tolerance, triangulationType);
             }
-            
         }
-        
     }
-
-
 
     /*=== DRAW A TRIANGULATION ===*/
     // Draw Existing Point SEts with Delaunay / Regular Triangulation

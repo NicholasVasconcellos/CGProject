@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
     std::unordered_map<std::string, std::vector<Point>> pointSets = loadPointSets();
 
     // Set Parameters for Triangulations
-    std::vector<double> angleTolerance = {5, 10, 15, 20, 30};
+    std::vector<double> angleTolerance = {0,10,20,30,40,50,60,70,80,90};
     std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
 
     // // Produce all CSV Histograms

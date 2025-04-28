@@ -246,6 +246,33 @@ void getPointSets(int numPoints, std::vector<int> numClusters, double clusterDen
     }
 }
 
+template <typename TriangulationType>
+void drawTriangulation(std::unordered_map<std::string, std::vector<Point>> &pointSets, std::string pointSetLabel,
+                       std::string triangulationType, double tolerance)
+{
+    // Create triangulation object of the specified type
+    TriangulationType t;
+
+    if (pointSets.find(pointSetLabel) == pointSets.end())
+    {
+        throw std::runtime_error("No point set with label '" + pointSetLabel + "' exists");
+    }
+    std::vector<Point> points = pointSets[pointSetLabel];
+
+    // Insert points into the triangulation
+    t.insert(points.begin(), points.end());
+
+    // Cluster faces together
+    // Create Cluster Object - using template type
+    Clusters faceClusters = getClusters(t, label, triangulationType, tolerance);
+
+    // Standard Draw
+    CGAL::draw(t);
+
+    // Draw With Same Color Clusters
+    // drawTriangulationWithColors(t, (label + " " + triangulationType).c_str());
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -262,35 +289,35 @@ int main(int argc, char *argv[])
     // getPointSets(numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
 
     /*== Read Point Sets*/
-
-    /*=== CREATE HISTOGRAMS ====*/
-    // Get Histogram for all point sets
-
     // Read Point Sets and Labels
     std::unordered_map<std::string, std::vector<Point>> pointSets = loadPointSets();
 
     // Set Parameters for Triangulations
-    std::vector<double> angleTolerance = {0,10,20,30,40,50,60,70,80,90};
+    std::vector<double> angleTolerance = {0, 10, 20, 30, 40, 50, 60, 70, 80, 90};
     std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
 
-    // // Produce all CSV Histograms
-    for (auto it = pointSets.begin(); it != pointSets.end(); it++)
-    {
-        // For each Point SEt
-        for (auto &&triangulationType : triangulationTypes)
-        {
-            // For Each Triangulation Type
-            for (auto &&tolerance : angleTolerance)
-            {
-                // For each Angle Tolerance
-                std::string label = it->first;
-                simulate(it->second, label, tolerance, triangulationType);
-            }
-        }
-    }
+    /*=== CREATE HISTOGRAMS ====*/
+    // // Get Histogram for all point sets
+
+    // // // Produce all CSV Histograms
+    // for (auto it = pointSets.begin(); it != pointSets.end(); it++)
+    // {
+    //     // For each Point SEt
+    //     for (auto &&triangulationType : triangulationTypes)
+    //     {
+    //         // For Each Triangulation Type
+    //         for (auto &&tolerance : angleTolerance)
+    //         {
+    //             // For each Angle Tolerance
+    //             std::string label = it->first;
+    //             simulate(it->second, label, tolerance, triangulationType);
+    //         }
+    //     }
+    // }
 
     /*=== DRAW A TRIANGULATION ===*/
     // Draw Existing Point SEts with Delaunay / Regular Triangulation
+    drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_Uniform", "Delaunay", 50);
 
     return EXIT_SUCCESS;
 }

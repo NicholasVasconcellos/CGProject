@@ -43,7 +43,7 @@ void printInfo(Triangulation &t)
 // Check if an edge is vertical based on angle tolerance
 bool isVertical(double angle, double tolerance)
 {
-    return std::abs(90 - std::abs(angle)) <= tolerance;
+    return std::abs(90 - std::abs(angle)) < tolerance;
 }
 
 /**

@@ -271,20 +271,20 @@ int main(int argc, char *argv[])
     std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
 
 
-    // // Produce all CSV Histograms
-    for (auto &&points : pointSets)
-    {
-        for (auto &&triangulationType : triangulationTypes)
-        {
-            for (auto &&tolerance : angleTolerance)
-            {
-                simulate(points,labels)
+    // // // Produce all CSV Histograms
+    // for (auto &&points : pointSets)
+    // {
+    //     for (auto &&triangulationType : triangulationTypes)
+    //     {
+    //         for (auto &&tolerance : angleTolerance)
+    //         {
+    //             simulate(points,labels)
 
-            }
+    //         }
 
-        }
+    //     }
 
-    }
+    // }
 
     // for (int i = 0; i < 2; i++)
     // {

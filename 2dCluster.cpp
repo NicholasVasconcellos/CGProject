@@ -194,35 +194,89 @@ bool savePointsToCSV(const std::vector<Point> &points, const std::string &filena
 }
 
 /**
- * @brief Load points from a CSV file
+ * @brief Parse a single CSV file and extract points
  *
- * @param filename Name of the CSV file
- * @return std::vector<Point> Vector of loaded points
+ * Reads a CSV file containing point coordinates and converts them into Point objects.
+ *
+ * @param filename Path to the CSV file to read
+ * @return Vector of Point objects parsed from the file
  */
-std::vector<Point> loadPointsFromCSV(const std::string &filename)
+std::vector<Point> readPointsFromCSV(const std::string &filename)
 {
     std::vector<Point> points;
-    std::ifstream csvFile(filename);
+    std::ifstream file(filename);
 
-    if (!csvFile.is_open())
+    if (!file.is_open())
     {
-        std::cerr << "Error: Could not open file " << filename << " for reading." << std::endl;
+        std::cerr << "Error: Could not open file " << filename << std::endl;
         return points;
     }
 
-    // Skip header
     std::string line;
-    std::getline(csvFile, line);
+    // Skip header line if it exists
+    std::getline(file, line);
 
     // Read points
     double x, y;
-    char comma;
-    while (csvFile >> x >> comma >> y)
+    while (file >> x)
     {
+        // Handle CSV format (comma after x value)
+        if (file.peek() == ',')
+            file.ignore();
+
+        file >> y;
         points.push_back(Point(x, y));
+
+        // Ignore the rest of the line (including the newline)
+        std::getline(file, line);
     }
 
-    csvFile.close();
-    std::cout << "Loaded " << points.size() << " points from " << filename << std::endl;
+    file.close();
     return points;
+}
+
+/**
+ * @brief Load point sets from CSV files in directory
+ *
+ * Reads all CSV files from the ../pointSets directory, parsing each one into a vector
+ * of points. The filename (without extension) is used as the key in the returned map.
+ *
+ * @return An unordered map with filename as key and vector of points as value
+ */
+std::unordered_map<std::string, std::vector<Point>> loadPointSets()
+{
+    std::unordered_map<std::string, std::vector<Point>> pointSets;
+    std::string directory = "../pointSets";
+
+    try
+    {
+        // Iterate through all files in the directory
+        for (const auto &entry : std::filesystem::directory_iterator(directory))
+        {
+            if (entry.path().extension() == ".csv")
+            {
+                // Extract the label from the filename (remove path and extension)
+                std::string filename = entry.path().filename().string();
+                std::string label = filename.substr(0, filename.length() - 4); // Remove .csv
+
+                // Read points from file
+                std::vector<Point> points = readPointsFromCSV(entry.path().string());
+
+                // Add to map
+                if (!points.empty())
+                {
+                    pointSets[label] = points;
+                    std::cout << "Loaded " << points.size() << " points from " << filename << std::endl;
+                }
+            }
+        }
+
+        std::cout << "Loaded " << pointSets.size() << " point sets from CSV files" << std::endl;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error reading point sets: " << e.what() << std::endl;
+    }
+
+    return pointSets;
 }

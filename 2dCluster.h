@@ -58,9 +58,10 @@ struct Clusters
     std::vector<Cluster *> clusterList;
     std::string pointType;
     std::string trinagulationType;
+    double minAngle; // Min Horizontal Angle by which we still Group two faces
     std::string parameters;
 
-    Clusters(std::string &pointType, std::string &triangulationType);
+    Clusters(std::string &pointType, std::string &triangulationType, double tolerance);
 
     void buildTable();
     void getHistogram();

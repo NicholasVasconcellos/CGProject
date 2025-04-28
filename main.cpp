@@ -81,7 +81,7 @@ Clusters getClusters(Triangulation &t, double tolerance, std::string &pointSetLa
     nextClusterQ.push(f);
 
     // Create Clusters obj to store all clusters
-    Clusters allClusters(pointSetLabel, triangulationType);
+    Clusters allClusters(pointSetLabel, triangulationType, tolerance);
 
     // Reference to current Cluster
     Cluster *clusterPtr = nullptr;
@@ -159,22 +159,50 @@ Clusters getClusters(Triangulation &t, double tolerance, std::string &pointSetLa
 void simulate(std::vector<Point> &points, std::string &label, double tolerance, std::string &triangulationType)
 {
     // Create a triangulation and iterative add each point in the set
-    Triangulation t;
-    t.insert(points.begin(), points.end());
+    if (triangulationType == "Regular")
+    {
+        Triangulation t;
+        t.insert(points.begin(), points.end());
+        // // Print Edges and Vertices (Optional)
+        // printInfo(t);
 
-    // // Print Edges and Vertices (Optional)
-    // printInfo(t);
+        // Cluster Faces together
+        // Create Cluster Object
+        Clusters faceClusters = getClusters(t, tolerance, label, triangulationType);
 
-    // Cluster Faces together
-    // Create Cluster Object
-    Clusters faceClusters = getClusters(t, tolerance, label, triangulationType);
+        // Build a table
+        faceClusters.buildTable();
+        // Create a Histogram CSV File
+        faceClusters.getHistogram();
 
-    // Build a table
-    faceClusters.buildTable();
-    // Create a Histogram CSV File
-    faceClusters.getHistogram();
+        // CGAL::draw(t);
 
-    drawTriangulationWithColors(t, (label + " " + triangulationType).c_str());
+        // drawTriangulationWithColors(t, (label + " " + triangulationType).c_str());
+    }
+    else if (triangulationType == "Delaunay")
+    {
+        DelaunayTriangulation t;
+        t.insert(points.begin(), points.end());
+        // // Print Edges and Vertices (Optional)
+        // printInfo(t);
+
+        // Cluster Faces together
+        // Create Cluster Object
+        Clusters faceClusters = getClusters(t, tolerance, label, triangulationType);
+
+        // Build a table
+        faceClusters.buildTable();
+        // Create a Histogram CSV File
+        faceClusters.getHistogram();
+
+        // CGAL::draw(t);
+
+        // drawTriangulationWithColors(t, (label + " " + triangulationType).c_str());
+    }
+    else
+    {
+        throw(std::runtime_error("Invalid Triangulation Type selected: \"" + triangulationType + "\""));
+    }
 }
 
 void getPointSets(std::vector<std::vector<Point>> &pointSets, std::vector<std::string> &labels, int numPoints, int numClusters, double clusterDensity,
@@ -209,7 +237,7 @@ int main(int argc, char *argv[])
     // Generate Random Point Sets
 
     // Set Parameters for point generation
-    int numPoints = 500;
+    int numPoints = 1000;
 
     // std::vector<int> numClusters = {5, 10, 20, 50};
 
@@ -231,9 +259,9 @@ int main(int argc, char *argv[])
     // Choose Type of Triangulation
     std::string triangulationType = "Regular";
 
-    // Produces a Histogram in CSV and a window to view the triangulation
+    // Produces a Histograms in CSV
     // FIX ME: ONLY DOING FIRST PLOT FOR NOW
-    for (int i = 1; i < 2; i++)
+    for (int i = 0; i < 1; i++)
     {
         simulate(pointSets.at(i), labels.at(i), tolerance, triangulationType);
     }

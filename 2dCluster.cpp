@@ -2,7 +2,7 @@
 
 FaceInfo::FaceInfo() : clusterIdx(-1), seen(false) {}
 
-Cluster::Cluster(int index) : index(index) {setColor();}
+Cluster::Cluster(int index) : index(index) { setColor(); }
 
 void Cluster::setColor()
 {
@@ -18,7 +18,10 @@ void Cluster::setColor()
                               colorDist(gen));
 }
 
-Clusters::Clusters(std::string &pointType, std::string &trinagulationType) : pointType(pointType), trinagulationType(trinagulationType) {}
+Clusters::Clusters(std::string &pointType, std::string &trinagulationType, double tolerance) : pointType(pointType), trinagulationType(trinagulationType)
+{
+    minAngle = 90.0 - tolerance;
+}
 
 void Clusters::buildTable()
 {
@@ -43,7 +46,7 @@ void Clusters::getHistogram()
     std::cout << "Creating CSV File" << std::endl;
 
     // Create filename based on Parameters
-    std::string filename = "../results/" + this->pointType + "_" + this->trinagulationType + "histogram.csv";
+    std::string filename = "../results/" + this->pointType + "Points_" + this->trinagulationType + "Triangulation_" + std::to_string(this->minAngle) + "Degrees.csv";
 
     // Open a CSV file for writing
     std::ofstream csvFile(filename);

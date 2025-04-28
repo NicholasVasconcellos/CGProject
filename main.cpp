@@ -276,22 +276,22 @@ int main(int argc, char *argv[])
     std::vector<double> angleTolerance = {5, 10, 15, 20, 30};
     std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
 
-    // // // Produce all CSV Histograms
-    // for(auto it = pointSets.begin(); it != pointSets.end(); it++){
-    //     // For each Point SEt
-    //     for (auto &&t : triangulationTypes)
-    //     {
-    //         // For Each Triangulation Type
-    //         for (auto &&tolerance : angleTolerance)
-    //         {
-    //             // For each Angle Tolerance
-    //             simulate()
+    // // Produce all CSV Histograms
+    for(auto it = pointSets.begin(); it != pointSets.end(); it++){
+        // For each Point SEt
+        for (auto &&triangulationType : triangulationTypes)
+        {
+            // For Each Triangulation Type
+            for (auto &&tolerance : angleTolerance)
+            {
+                // For each Angle Tolerance
+                simulate(it->second, it->first, tolerance, triangulationType);
                 
-    //         }
+            }
             
-    //     }
+        }
         
-    // }
+    }
 
 
 

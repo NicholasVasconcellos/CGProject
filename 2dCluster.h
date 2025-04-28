@@ -18,6 +18,7 @@
 #include <fstream>
 #include <iostream>
 #include <random>
+#include <filesystem>
 
 struct FaceInfo
 {

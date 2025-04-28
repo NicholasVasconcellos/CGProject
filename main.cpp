@@ -246,6 +246,7 @@ void getPointSets(int numPoints, std::vector<int> numClusters, double clusterDen
     }
 }
 
+
 int main(int argc, char *argv[])
 {
 
@@ -269,20 +270,21 @@ int main(int argc, char *argv[])
     std::vector<double> angleTolerance = {5, 10, 15, 20, 30};
     std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
 
-    // // // Produce all CSV Histograms
-    // for (auto &&points : pointSets)
-    // {
-    //     for (auto &&triangulationType : triangulationTypes)
-    //     {
-    //         for (auto &&tolerance : angleTolerance)
-    //         {
-    //             simulate(points,labels)
 
-    //         }
+    // // Produce all CSV Histograms
+    for (auto &&points : pointSets)
+    {
+        for (auto &&triangulationType : triangulationTypes)
+        {
+            for (auto &&tolerance : angleTolerance)
+            {
+                simulate(points,labels)
 
-    //     }
+            }
 
-    // }
+        }
+
+    }
 
     // for (int i = 0; i < 2; i++)
     // {

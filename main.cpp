@@ -264,7 +264,7 @@ void drawTriangulation(std::unordered_map<std::string, std::vector<Point>> &poin
 
     // Cluster faces together
     // Create Cluster Object - using template type
-    Clusters faceClusters = getClusters(t, label, triangulationType, tolerance);
+    Clusters faceClusters = getClusters(t, pointSetLabel, triangulationType, tolerance);
 
     // Standard Draw
     CGAL::draw(t);

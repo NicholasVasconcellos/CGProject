@@ -46,7 +46,7 @@ void Clusters::getHistogram()
     std::cout << "Creating CSV File" << std::endl;
 
     // Create filename based on Parameters
-    std::string filename = "../results/" + this->pointType + "Points_" + this->trinagulationType + "Triangulation_" + std::to_string(this->minAngle) + "Degrees.csv";
+    std::string filename = "../results/" + this->pointType + "Points_" + this->trinagulationType + "Triangulation_" + std::to_string(static_cast<int>(this->minAngle)) + "°_.csv";
 
     // Open a CSV file for writing
     std::ofstream csvFile(filename);

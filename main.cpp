@@ -267,10 +267,10 @@ void drawTriangulation(std::unordered_map<std::string, std::vector<Point>> &poin
     Clusters faceClusters = getClusters(t, pointSetLabel, triangulationType, tolerance);
 
     // Standard Draw
-    CGAL::draw(t);
+    // CGAL::draw(t);
 
     // Draw With Same Color Clusters
-    // drawTriangulationWithColors(t, (label + " " + triangulationType).c_str());
+    drawTriangulationWithColors(t, (pointSetLabel + " " + triangulationType).c_str());
 }
 
 int main(int argc, char *argv[])

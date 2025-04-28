@@ -246,22 +246,24 @@ void getPointSets(int numPoints, std::vector<int> numClusters, double clusterDen
     }
 }
 
-
 int main(int argc, char *argv[])
 {
 
-
     /*=== CREATE POINT SETS ====*/
 
-    // Set Parameters for point generation
-    int numPoints = 1000;
-    std::vector<int> numClusters = {5, 10, 20, 50};
-    double clusterDensity = 5.0;
-    double xMin = -50.0, xMax = 50.0;
-    double yMin = -50.0, yMax = 50.0;
+    // // Set Parameters for point generation
+    // int numPoints = 1000;
+    // std::vector<int> numClusters = {5, 10, 20, 50};
+    // double clusterDensity = 5.0;
+    // double xMin = -50.0, xMax = 50.0;
+    // double yMin = -50.0, yMax = 50.0;
 
-    // Write Point Sets to pointSets Folder in CSV format
-    getPointSets(numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
+    // // Write Point Sets to pointSets Folder in CSV format
+    // getPointSets(numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
+
+    /*== Read Point Sets*/
+
+    std::unordered_map<std::string, std::vector<Point>> pointSets = loadPointSets();
 
     /*=== CREATE HISTOGRAMS ====*/
     // Get Histogram for all point sets
@@ -269,7 +271,6 @@ int main(int argc, char *argv[])
     // Set Parameters for Triangulations
     std::vector<double> angleTolerance = {5, 10, 15, 20, 30};
     std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
-
 
     // // // Produce all CSV Histograms
     // for (auto &&points : pointSets)

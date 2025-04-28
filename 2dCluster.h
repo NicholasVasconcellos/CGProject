@@ -73,7 +73,12 @@ std::vector<Point> generateUniformRandomPoints(int numPoints, double xMin, doubl
 std::vector<Point> generateClusteredPoints(int numPoints, int numClusters, double clusterDensity,
                                            double xMin, double xMax, double yMin, double yMax);
 bool savePointsToCSV(const std::vector<Point> &points, const std::string &filename);
-std::vector<Point> loadPointsFromCSV(const std::string &filename);
+
+// Load points from a CSV File
+std::vector<Point> readPointsFromCSV(const std::string &filename);
+
+// Load Points From CSV in Target Directory
+std::unordered_map<std::string, std::vector<Point>> loadPointSets();
 
 // Custom color functor for the CGAL triangulation viewer
 struct ClusterColorFunctor

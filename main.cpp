@@ -205,29 +205,32 @@ void simulate(std::vector<Point> &points, std::string &label, double tolerance, 
     }
 }
 
-void getPointSets(std::vector<std::vector<Point>> &pointSets, std::vector<std::string> &labels, int numPoints, int numClusters, double clusterDensity,
+
+void getPointSets(std::unordered_map<std::string,std::vector<Point>> &pointSets, int numPoints, int numClusters, double clusterDensity,
                   double xMin, double xMax, double yMin, double yMax)
 {
+    std::string label;
+
     // Uniform Points
     std::cout << "Generating " << numPoints << " uniform random points..." << std::endl;
     std::vector<Point> uniformPoints = generateUniformRandomPoints(numPoints, xMin, xMax, yMin, yMax);
-    pointSets.push_back(uniformPoints);
-    labels.push_back("uniform");
+    label = "N=" + std::to_string(numPoints) + "_Uniform";
+    pointSets[label] = uniformPoints;
+
 
     // Clustered Points
     std::cout << "Generating " << numPoints << " points in " << numClusters
               << " clusters with density " << clusterDensity << "..." << std::endl;
     std::vector<Point> clusteredPoints = generateClusteredPoints(numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
-    pointSets.push_back(clusteredPoints);
-    labels.push_back("clustered");
+    label = "N=" + std::to_string(numPoints) + "_K=" + std::to_string(numClusters);
+    pointSets[label] = clusteredPoints;
 
     // Use sample points for testing
     std::cout << "Generating Sample Points" << std::endl;
     std::vector<Point> samplePoints = {
         Point(0, 0), Point(1, 0), Point(0, 1),
         Point(1, 1), Point(0.5, 0.5)};
-    pointSets.push_back(samplePoints);
-    labels.push_back("sample");
+    pointSets["Sample_Points"] = samplePoints;
 
     std::cout << " Generated " << pointSets.size() << "Point SEts" << std::endl;
 }
@@ -240,31 +243,53 @@ int main(int argc, char *argv[])
     int numPoints = 1000;
 
     // std::vector<int> numClusters = {5, 10, 20, 50};
-
     int numClusters = 5;
     double clusterDensity = 5.0;
     double xMin = -50.0, xMax = 50.0;
     double yMin = -50.0, yMax = 50.0;
-    double tolerance = 40;
+
+    std::vector<double> angleTolerance = {5, 10, 15, 20, 30};
+
 
     // Generate all Point Sets
-    std::vector<std::vector<Point>> pointSets;
-    // Labels each set of points based on it's type
-    std::vector<std::string> labels;
 
+    std::unordered_map<std::string,std::vector<Point>> pointSets;
     // Fills in Point sets and labels each one
-    getPointSets(pointSets, labels, numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
+    getPointSets(pointSets, numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
 
-    // Triangulate each Point Set
-    // Choose Type of Triangulation
-    std::string triangulationType = "Delaunay";
+    // Write all Point Sets to CSV
+    for(auto it = pointSets.begin(); it != pointSets.end(); ++it) {
 
-    // Produces a Histograms in CSV
-    // FIX ME: ONLY DOING FIRST PLOT FOR NOW
-    for (int i = 0; i < 1; i++)
-    {
-        simulate(pointSets.at(i), labels.at(i), tolerance, triangulationType);
+        std::string filename = "../pointSets/" + it->first + ".csv"; 
+        savePointsToCSV(it->second, filename);
     }
+
+    // // Triangulate each Point Set
+    // // Choose Type of Triangulation
+    // std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
+    // std::string triangulationType = "Delaunay";
+
+    // // Produce all CSV Histograms
+    // for (auto &&points : pointSets) 
+    // {
+    //     for (auto &&triangulationType : triangulationTypes)
+    //     {
+    //         for (auto &&tolerance : angleTolerance) 
+    //         {
+    //             simulate(points,labels)
+                
+    //         }
+            
+    //     }
+        
+        
+    // }
+    
+
+    // for (int i = 0; i < 2; i++)
+    // {
+    //     simulate(pointSets.at(i), labels.at(i), tolerance, triangulationType);
+    // }
 
     return EXIT_SUCCESS;
 }

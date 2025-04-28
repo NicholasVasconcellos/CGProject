@@ -205,9 +205,11 @@ void simulate(std::vector<Point> &points, std::string &label, double tolerance, 
     }
 }
 
-void getPointSets(std::unordered_map<std::string, std::vector<Point>> &pointSets, int numPoints, std::vector<int> numClusters, double clusterDensity,
+void getPointSets(int numPoints, std::vector<int> numClusters, double clusterDensity,
                   double xMin, double xMax, double yMin, double yMax)
 {
+    // Generate all Point Sets
+    std::unordered_map<std::string, std::vector<Point>> pointSets;
     std::string label;
 
     // Uniform Points
@@ -234,27 +236,6 @@ void getPointSets(std::unordered_map<std::string, std::vector<Point>> &pointSets
     pointSets["Sample_Points"] = samplePoints;
 
     std::cout << " Generated " << pointSets.size() << "Point SEts" << std::endl;
-}
-
-int main(int argc, char *argv[])
-{
-    // Generate Random Point Sets
-
-    // Set Parameters for point generation
-    int numPoints = 1000;
-
-    std::vector<int> numClusters = {5, 10, 20, 50};
-    double clusterDensity = 5.0;
-    double xMin = -50.0, xMax = 50.0;
-    double yMin = -50.0, yMax = 50.0;
-
-    std::vector<double> angleTolerance = {5, 10, 15, 20, 30};
-
-    // Generate all Point Sets
-
-    std::unordered_map<std::string, std::vector<Point>> pointSets;
-    // Fills in Point sets and labels each one
-    getPointSets(pointSets, numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
 
     // Write all Point Sets to CSV
     for (auto it = pointSets.begin(); it != pointSets.end(); ++it)
@@ -263,13 +244,32 @@ int main(int argc, char *argv[])
         std::string filename = "../pointSets/" + it->first + ".csv";
         savePointsToCSV(it->second, filename);
     }
+}
 
-    // // Triangulate each Point Set
-    // // Choose Type of Triangulation
-    // std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
-    // std::string triangulationType = "Delaunay";
+int main(int argc, char *argv[])
+{
 
-    // // Produce all CSV Histograms
+
+    /*=== CREATE POINT SETS ====*/
+
+    // Set Parameters for point generation
+    int numPoints = 1000;
+    std::vector<int> numClusters = {5, 10, 20, 50};
+    double clusterDensity = 5.0;
+    double xMin = -50.0, xMax = 50.0;
+    double yMin = -50.0, yMax = 50.0;
+
+    // Write Point Sets to pointSets Folder in CSV format
+    getPointSets(numPoints, numClusters, clusterDensity, xMin, xMax, yMin, yMax);
+
+    /*=== CREATE HISTOGRAMS ====*/
+    // Get Histogram for all point sets
+
+    // Set Parameters for Triangulations
+    std::vector<double> angleTolerance = {5, 10, 15, 20, 30};
+    std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
+
+    // // // Produce all CSV Histograms
     // for (auto &&points : pointSets)
     // {
     //     for (auto &&triangulationType : triangulationTypes)
@@ -288,6 +288,9 @@ int main(int argc, char *argv[])
     // {
     //     simulate(pointSets.at(i), labels.at(i), tolerance, triangulationType);
     // }
+
+    /*=== DRAW A TRIANGULATION ===*/
+    // Draw Existing Point SEts with Delaunay / Regular Triangulation
 
     return EXIT_SUCCESS;
 }

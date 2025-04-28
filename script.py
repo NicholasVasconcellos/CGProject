@@ -24,18 +24,25 @@ for csv_file in csv_files:
     # Sort data by ClusterSize for better visualization
     data = data.sort_values('ClusterSize')
     
-    # Create figure and axis for this file
-    fig, ax = plt.subplots(figsize=(12, 8))
+    # Determine appropriate figure size based on data
+    # Adjust width based on number of bars
+    base_width = 12
+    width_adjustment = max(0, len(data) - 10) * 0.5  # Add 0.5 inch for every additional bar beyond 10
+    
+    # Create figure and axis with adjusted size
+    fig, ax = plt.subplots(figsize=(base_width + width_adjustment, 10))
     
     # Create the histogram using bar plot
     bars = ax.bar(data['ClusterSize'], data['Count'], color='steelblue', alpha=0.8, 
            width=0.8, edgecolor='black', linewidth=0.5)
     
-    # Add data labels on top of each bar
+    # Add data labels on top of each bar, but only if the count is significant
     for bar in bars:
         height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2., height + 5,
-                f'{height}', ha='center', va='bottom', fontsize=9)
+        # Only add label if height is above a threshold to reduce clutter
+        if height > max(data['Count']) * 0.05:  # 5% of max height
+            ax.text(bar.get_x() + bar.get_width()/2., height + (max(data['Count']) * 0.01), 
+                    f'{height}', ha='center', va='bottom', fontsize=9)
     
     # Add a title and labels including the file name
     csv_filename = os.path.splitext(csv_file)[0]  # Get name without extension
@@ -46,11 +53,13 @@ for csv_file in csv_files:
     # Add grid lines for better readability
     ax.yaxis.grid(True, linestyle='--', alpha=0.7)
     
-    # Set the x-axis to show all cluster sizes
+    # Set the x-axis to show all cluster sizes, but rotate labels if there are many
     ax.set_xticks(data['ClusterSize'])
+    if len(data) > 10:
+        plt.xticks(rotation=45, ha='right')
     
-    # Tight layout to ensure everything fits
-    plt.tight_layout()
+    # Adjust subplot parameters to give more space
+    plt.subplots_adjust(bottom=0.15, top=0.9, left=0.1, right=0.95)
     
     # Save the figure in the images folder with the same name as the original CSV
     images_dir = '/mnt/c/Users/Nicholas/Developer/CGProject/images'

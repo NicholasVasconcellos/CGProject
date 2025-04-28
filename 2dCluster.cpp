@@ -18,7 +18,7 @@ void Cluster::setColor()
                               colorDist(gen));
 }
 
-Clusters::Clusters(std::string &pointType, std::string &trinagulationType, double tolerance) : pointType(pointType), trinagulationType(trinagulationType)
+Clusters::Clusters(std::string &label, std::string &triangulationType, double tolerance) : label(label), triangulationType(triangulationType)
 {
     minAngle = 90.0 - tolerance;
 }
@@ -46,7 +46,7 @@ void Clusters::getHistogram()
     std::cout << "Creating CSV File" << std::endl;
 
     // Create filename based on Parameters
-    std::string filename = "../results/" + this->pointType + "Points_" + this->trinagulationType + "Triangulation_" + std::to_string(static_cast<int>(this->minAngle)) + "°_.csv";
+    std::string filename = "../results/" + this->label + "_Tri=" + this->triangulationType + "_Angle=" + std::to_string(static_cast<int>(this->minAngle)) + "°.csv";
 
     // Open a CSV file for writing
     std::ofstream csvFile(filename);

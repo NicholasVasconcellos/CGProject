@@ -57,12 +57,11 @@ struct Clusters
 {
     std::unordered_map<int, int> table;
     std::vector<Cluster *> clusterList;
-    std::string pointType;
-    std::string trinagulationType;
+    std::string label;
+    std::string triangulationType;
     double minAngle; // Min Horizontal Angle by which we still Group two faces
-    std::string parameters;
 
-    Clusters(std::string &pointType, std::string &triangulationType, double tolerance);
+    Clusters(std::string &label, std::string& triangulationType, double tolerance);
 
     void buildTable();
     void getHistogram();

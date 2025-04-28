@@ -66,7 +66,7 @@ bool isClusterable(Face f, int i, double tolerance)
     return isVertical(angle, tolerance);
 }
 
-Clusters getClusters(Triangulation &t, double tolerance, std::string &pointSetLabel, std::string &triangulationType)
+Clusters getClusters(Triangulation &t, std::string &pointSetLabel, std::string &triangulationType, double tolerance)
 {
 
     // Create a queue for Curr and next Clusters
@@ -168,7 +168,7 @@ void simulate(std::vector<Point> &points, std::string &label, double tolerance, 
 
         // Cluster Faces together
         // Create Cluster Object
-        Clusters faceClusters = getClusters(t, tolerance, label, triangulationType);
+        Clusters faceClusters = getClusters(t,label, triangulationType, tolerance);
 
         // Build a table
         faceClusters.buildTable();
@@ -188,7 +188,7 @@ void simulate(std::vector<Point> &points, std::string &label, double tolerance, 
 
         // Cluster Faces together
         // Create Cluster Object
-        Clusters faceClusters = getClusters(t, tolerance, label, triangulationType);
+        Clusters faceClusters = getClusters(t, label, triangulationType, tolerance);
 
         // Build a table
         faceClusters.buildTable();
@@ -263,34 +263,37 @@ int main(int argc, char *argv[])
 
     /*== Read Point Sets*/
 
-    std::unordered_map<std::string, std::vector<Point>> pointSets = loadPointSets();
+
 
     /*=== CREATE HISTOGRAMS ====*/
     // Get Histogram for all point sets
+
+
+    // Read Point Sets and Labels
+    std::unordered_map<std::string, std::vector<Point>> pointSets = loadPointSets();
 
     // Set Parameters for Triangulations
     std::vector<double> angleTolerance = {5, 10, 15, 20, 30};
     std::vector<std::string> triangulationTypes = {"Regular", "Delaunay"};
 
     // // // Produce all CSV Histograms
-    // for (auto &&points : pointSets)
-    // {
-    //     for (auto &&triangulationType : triangulationTypes)
+    // for(auto it = pointSets.begin(); it != pointSets.end(); it++){
+    //     // For each Point SEt
+    //     for (auto &&t : triangulationTypes)
     //     {
+    //         // For Each Triangulation Type
     //         for (auto &&tolerance : angleTolerance)
     //         {
-    //             simulate(points,labels)
-
+    //             // For each Angle Tolerance
+    //             simulate()
+                
     //         }
-
+            
     //     }
-
+        
     // }
 
-    // for (int i = 0; i < 2; i++)
-    // {
-    //     simulate(pointSets.at(i), labels.at(i), tolerance, triangulationType);
-    // }
+
 
     /*=== DRAW A TRIANGULATION ===*/
     // Draw Existing Point SEts with Delaunay / Regular Triangulation

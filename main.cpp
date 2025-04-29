@@ -317,7 +317,31 @@ int main(int argc, char *argv[])
 
     /*=== DRAW A TRIANGULATION ===*/
     // Draw Existing Point SEts with Delaunay / Regular Triangulation
-    drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_Uniform", "Delaunay", 50);
+    // drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_Uniform", "Delaunay", 90);
+    // drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_Uniform", "Delaunay", 90);
+    // drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_Uniform", "Delaunay", 90);
+    // drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_Uniform", "Delaunay", 90);
+
+    // drawTriangulation<Triangulation>(pointSets, "N=1000_Uniform", "Regular", 0); // 90
+    // drawTriangulation<Triangulation>(pointSets, "N=1000_Uniform", "Regular", 30); // 60
+    // drawTriangulation<Triangulation>(pointSets, "N=1000_Uniform", "Regular", 50); // 40
+    // drawTriangulation<Triangulation>(pointSets, "N=1000_Uniform", "Regular", 70); // 20
+    // drawTriangulation<Triangulation>(pointSets, "N=1000_Uniform", "Regular", 90); // 0
+
+    // Clustered Point Sets
+    // Draw Existing Point SEts with Delaunay / Regular Triangulation
+    // drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_K=5", "Delaunay", 0);
+    // drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_K=5", "Delaunay", 30);
+    // drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_K=5", "Delaunay", 50); // 40
+    // drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_K=5", "Delaunay", 70); //20
+    // drawTriangulation<DelaunayTriangulation>(pointSets, "N=1000_K=5", "Delaunay", 90); //0
+
+
+    // drawTriangulation<Triangulation>(pointSets, "N=1000_K=5", "Regular", 0);  // 90
+    // drawTriangulation<Triangulation>(pointSets, "N=1000_K=5", "Regular", 30); // 60
+    // drawTriangulation<Triangulation>(pointSets, "N=1000_K=5", "Regular", 50); // 40
+    // drawTriangulation<Triangulation>(pointSets, "N=1000_K=5", "Regular", 70); // 20
+    // drawTriangulation<Triangulation>(pointSets, "N=1000_K=5", "Regular", 90); // 0
 
     return EXIT_SUCCESS;
 }
